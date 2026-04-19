@@ -30,8 +30,8 @@ export class App {
         this.initStage();
         this.initWorld();
         this.initScene();
-        this.initViews();
         this.initControllers();
+        this.initViews();
 
         this.addListeners();
         this.onResize();
@@ -77,6 +77,15 @@ export class App {
 
         window.addEventListener('resize', this.onWindowResize);
         document.addEventListener('visibilitychange', this.onVisibility);
+        window.addEventListener('pointerdown', this.onFirstGesture);
+        window.addEventListener('keydown', this.onFirstGesture);
+    };
+
+    onFirstGesture = () => {
+        AudioController.onFirstGesture();
+
+        window.removeEventListener('pointerdown', this.onFirstGesture);
+        window.removeEventListener('keydown', this.onFirstGesture);
     };
 
     // Event handlers

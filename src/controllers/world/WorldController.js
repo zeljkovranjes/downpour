@@ -19,6 +19,7 @@ export class WorldController {
         this.initWorld();
 
         this.addListeners();
+        this.onResize();
     }
 
     static initWorld() {

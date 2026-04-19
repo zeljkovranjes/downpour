@@ -7,4 +7,6 @@ export class Global {
     static TIME = 0;
     static PAGE_INDEX = 0;
     static SECTION_INDEX = 0;
+    static thunder = 0;
+    static audioLevel = 0;
 }

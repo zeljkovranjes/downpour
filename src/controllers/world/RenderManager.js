@@ -22,6 +22,7 @@ export class RenderManager {
         this.initRenderer();
 
         this.addListeners();
+        this.onResize();
     }
 
     static initRenderer() {

@@ -14,4 +14,5 @@ export class Events {
     static VIEW_CHANGE = 'view_change';
     static STATE_CHANGE = 'state_change';
     static COLOR_PICKER = 'color_picker';
+    static SOUND_TOGGLED = 'sound_toggled';
 }
