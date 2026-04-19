@@ -45,6 +45,8 @@ export class SoundToggle extends Interface {
             color: 'inherit',
             cursor: 'pointer',
             pointerEvents: 'auto',
+            opacity: 0,
+            transition: 'opacity 400ms ease-out',
             webkitTapHighlightColor: 'rgba(0, 0, 0, 0)'
         });
     };
@@ -74,6 +76,7 @@ export class SoundToggle extends Interface {
         this.element.addEventListener('mouseenter', this.onHover);
         this.element.addEventListener('mouseleave', this.onHover);
         this.element.addEventListener('click', this.onClick);
+        Stage.events.on(Events.LOAD_BEGIN, this.onLoadBegin);
         ticker.add(this.onUpdate);
     };
 
@@ -81,7 +84,12 @@ export class SoundToggle extends Interface {
         this.element.removeEventListener('mouseenter', this.onHover);
         this.element.removeEventListener('mouseleave', this.onHover);
         this.element.removeEventListener('click', this.onClick);
+        Stage.events.off(Events.LOAD_BEGIN, this.onLoadBegin);
         ticker.remove(this.onUpdate);
+    };
+
+    onLoadBegin = () => {
+        this.css({ opacity: 1 });
     };
 
     // Event handlers

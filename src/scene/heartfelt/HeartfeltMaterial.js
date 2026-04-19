@@ -16,7 +16,10 @@ export class HeartfeltMaterial extends RawShaderMaterial {
                 iResolution: { value: new Vector2() },
                 iMouse: { value: new Vector3() },
                 iChannel0: { value: null },
-                uThunder: { value: 0 }
+                uThunder: { value: 0 },
+                uResolution: { value: 16 },
+                uBlur: { value: 6 },
+                uSaturation: { value: 0.1 }
             },
             vertexShader,
             fragmentShader,

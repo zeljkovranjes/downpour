@@ -19,7 +19,7 @@ export class Data {
     static pages = [
         {
             path: '/',
-            title: 'Liminal'
+            title: 'Experience'
         }
     ];
 }

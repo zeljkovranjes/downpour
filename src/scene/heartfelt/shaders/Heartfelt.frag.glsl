@@ -8,6 +8,9 @@ uniform vec2 iResolution;
 uniform vec3 iMouse;
 uniform sampler2D iChannel0;
 uniform float uThunder;
+uniform float uResolution;
+uniform float uBlur;
+uniform float uSaturation;
 
 in vec2 vUv;
 out vec4 fragColor;
@@ -102,7 +105,12 @@ vec2 Drops(vec2 uv, float t, float l0, float l1, float l2) {
 }
 
 void main() {
-    vec2 fragCoord = vUv * iResolution;
+    vec2 quantUv = vUv;
+    if (uResolution > 1.0) {
+        vec2 cells = max(iResolution / uResolution, vec2(1.0));
+        quantUv = (floor(vUv * cells) + 0.5) / cells;
+    }
+    vec2 fragCoord = quantUv * iResolution;
 
     vec2 uv = (fragCoord.xy - .5 * iResolution.xy) / iResolution.y;
     vec2 UV = fragCoord.xy / iResolution.xy;
@@ -169,7 +177,7 @@ void main() {
     c.y *= 1. - S(80., 100., T) * .8;
 #endif
 
-    float focus = mix(maxBlur - c.y, minBlur, S(.1, .2, c.x));
+    float focus = mix(maxBlur - c.y, minBlur, S(.1, .2, c.x)) + uBlur;
     vec3 col = textureLod(iChannel0, UV + n, focus).rgb;
 
 #ifdef USE_POST_PROCESSING
@@ -188,6 +196,9 @@ void main() {
 
     col *= fade;
 #endif
+
+    float luma = dot(col, vec3(0.299, 0.587, 0.114));
+    col = mix(vec3(luma), col, uSaturation);
 
     fragColor = vec4(col, 1.);
 }

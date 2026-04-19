@@ -15,4 +15,9 @@ export class Events {
     static STATE_CHANGE = 'state_change';
     static COLOR_PICKER = 'color_picker';
     static SOUND_TOGGLED = 'sound_toggled';
+    static LOAD_BEGIN = 'load_begin';
+    static LOAD_PROGRESS = 'load_progress';
+    static LOAD_COMPLETE = 'load_complete';
+    static FRAME_RELEASE = 'frame_release';
+    static TIME_OF_DAY_CHANGED = 'time_of_day_changed';
 }

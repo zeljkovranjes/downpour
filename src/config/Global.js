@@ -9,4 +9,11 @@ export class Global {
     static SECTION_INDEX = 0;
     static thunder = 0;
     static audioLevel = 0;
+
+    static loadProgress = 0;
+    static shaderResolution = 16;
+    static shaderBlur = 6;
+    static shaderSaturation = 0.1;
+    static shaderTimeScale = 0.25;
+    static audioVolume = 0;
 }

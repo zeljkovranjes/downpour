@@ -110,15 +110,34 @@ export class AudioAnalyser {
         const Ctx = window.AudioContext || window.webkitAudioContext;
 
         this.context = new Ctx();
+
+        if (this.context.state === 'suspended') {
+            this.context.resume();
+        }
+
         this.source = this.context.createMediaElementSource(this.audioElement);
         this.analyser = this.context.createAnalyser();
         this.analyser.fftSize = 256;
         this.analyser.smoothingTimeConstant = 0.4;
         this.data = new Uint8Array(this.analyser.frequencyBinCount);
 
-        this.source.connect(this.analyser);
+        this.gain = this.context.createGain();
+        this.gain.gain.value = 0;
+
+        this.source.connect(this.gain);
+        this.gain.connect(this.analyser);
         this.analyser.connect(this.context.destination);
     };
+
+    setVolume = v => {
+        if (!this.gain || !this.context) {
+            return;
+        }
+
+        this.gain.gain.setTargetAtTime(v, this.context.currentTime, 0.05);
+    };
+
+    getContext = () => this.context;
 
     resume = () => {
         if (this.context && this.context.state === 'suspended') {
@@ -137,6 +156,10 @@ export class AudioAnalyser {
             this.analyser.disconnect();
         }
 
+        if (this.gain) {
+            this.gain.disconnect();
+        }
+
         if (this.context && this.context.state !== 'closed') {
             this.context.close();
         }
@@ -144,6 +167,7 @@ export class AudioAnalyser {
         this.audioElement = null;
         this.source = null;
         this.analyser = null;
+        this.gain = null;
         this.context = null;
         this.data = null;
 

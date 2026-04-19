@@ -10,8 +10,6 @@ export class Scene extends Group {
     constructor() {
         super();
 
-        this.visible = false;
-
         this.initViews();
     }
 

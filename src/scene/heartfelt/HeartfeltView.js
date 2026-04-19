@@ -12,6 +12,9 @@ import {
     TextureLoader
 } from 'three';
 
+import { Stage } from '@alienkitty/space.js';
+
+import { Events } from '../../config/Events.js';
 import { Global } from '../../config/Global.js';
 import { HeartfeltMaterial } from './HeartfeltMaterial.js';
 
@@ -58,12 +61,15 @@ export class HeartfeltView extends Group {
     };
 
     update = (time, delta) => {
-        const dt = Math.min(delta * 0.001, 1 / 30);
+        const dt = Math.min(delta * 0.001, 1 / 30) * Global.shaderTimeScale;
         this.elapsed += dt;
 
         this.material.uniforms.iTime.value = this.elapsed;
         this.material.uniforms.iMouse.value.set(this.mouse.x, this.mouse.y, this.mouse.z);
         this.material.uniforms.uThunder.value = Global.thunder;
+        this.material.uniforms.uResolution.value = Global.shaderResolution;
+        this.material.uniforms.uBlur.value = Global.shaderBlur;
+        this.material.uniforms.uSaturation.value = Global.shaderSaturation;
     };
 
     animateIn = () => {
@@ -87,6 +93,8 @@ export class HeartfeltView extends Group {
 
         this.texture = texture;
         this.material.uniforms.iChannel0.value = texture;
+
+        Stage.events.emit(Events.LOAD_PROGRESS, { progress: 0.5 });
     };
 
     destroy = () => {
