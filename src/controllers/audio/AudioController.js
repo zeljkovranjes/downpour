@@ -31,6 +31,8 @@ export class AudioController {
         this.audioElement.crossOrigin = 'anonymous';
         this.audioElement.preload = 'auto';
         this.audioElement.volume = 1;
+        this.audioElement.setAttribute('playsinline', '');
+        this.audioElement.setAttribute('webkit-playsinline', '');
 
         this.audioElement.addEventListener('canplaythrough', this.onCanPlayThrough, { once: true });
     }
@@ -42,6 +44,8 @@ export class AudioController {
         this.bgElement.crossOrigin = 'anonymous';
         this.bgElement.preload = 'auto';
         this.bgElement.volume = 1;
+        this.bgElement.setAttribute('playsinline', '');
+        this.bgElement.setAttribute('webkit-playsinline', '');
 
         this.bgElement.addEventListener('error', () => {
             console.warn('bg.mp3 failed to load — continuing without background layer');
@@ -113,7 +117,7 @@ export class AudioController {
         }
     };
 
-    static onFirstGesture = () => {
+    static onFirstGesture = async () => {
         if (this.started) {
             return;
         }
@@ -138,12 +142,29 @@ export class AudioController {
             }
         }
 
+        const ctx = this.analyser.getContext();
+
+        if (ctx && ctx.state === 'suspended') {
+            await ctx.resume();
+        }
+
         if (!this.muted) {
-            this.audioElement.play().catch(() => {});
+            await this.kickstartIOS(this.audioElement);
 
             if (this.bgAvailable !== false) {
-                this.bgElement.play().catch(() => {});
+                await this.kickstartIOS(this.bgElement);
             }
+        }
+    };
+
+    static kickstartIOS = async element => {
+        try {
+            await element.play();
+            element.pause();
+            element.currentTime = 0;
+            await element.play();
+        } catch (err) {
+            console.warn('kickstart fallback:', err.message);
         }
     };
 
