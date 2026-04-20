@@ -48,11 +48,14 @@ export class CreditsModal extends Interface {
             padding: '0',
             background: 'transparent',
             border: 'none',
-            transform: 'scale(0.92)',
+            transform: 'scale(0.92) translateZ(0)',
             opacity: 0,
             filter: 'blur(6px)',
             transition: 'transform 600ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease-out, filter 600ms ease-out',
-            textAlign: 'center'
+            textAlign: 'center',
+            willChange: 'transform, filter, opacity',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden'
         });
         this.add(this.card);
     };
@@ -216,7 +219,7 @@ export class CreditsModal extends Interface {
         });
 
         this.card.css({
-            transform: 'scale(1)',
+            transform: 'scale(1) translateZ(0)',
             opacity: 1,
             filter: 'blur(0px)'
         });
@@ -227,7 +230,7 @@ export class CreditsModal extends Interface {
         this.open = false;
 
         this.card.css({
-            transform: 'scale(0.96)',
+            transform: 'scale(0.96) translateZ(0)',
             opacity: 0,
             filter: 'blur(4px)',
             transition: 'transform 350ms ease-in, opacity 300ms ease-in, filter 350ms ease-in'
