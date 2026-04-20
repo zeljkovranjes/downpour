@@ -11,6 +11,8 @@ import { Scene } from '../scene/Scene.js';
 import { Letterbox } from '../views/Letterbox.js';
 import { Loader } from '../views/Loader.js';
 import { OpeningLine } from '../views/OpeningLine.js';
+import { CreditsIcon } from '../views/ui/CreditsIcon.js';
+import { CreditsModal } from '../views/ui/CreditsModal.js';
 import { UI } from '../views/ui/UI.js';
 import { AudioController } from './audio/AudioController.js';
 import { LoaderController } from './LoaderController.js';
@@ -71,6 +73,12 @@ export class App {
 
         this.ui = new UI();
         Stage.add(this.ui);
+
+        this.creditsIcon = new CreditsIcon();
+        Stage.add(this.creditsIcon);
+
+        this.creditsModal = new CreditsModal();
+        Stage.add(this.creditsModal);
     };
 
     initControllers = () => {

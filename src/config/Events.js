@@ -20,4 +20,6 @@ export class Events {
     static LOAD_COMPLETE = 'load_complete';
     static FRAME_RELEASE = 'frame_release';
     static TIME_OF_DAY_CHANGED = 'time_of_day_changed';
+    static CREDITS_OPEN = 'credits_open';
+    static CREDITS_CLOSE = 'credits_close';
 }
