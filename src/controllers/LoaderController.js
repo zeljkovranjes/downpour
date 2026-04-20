@@ -16,6 +16,8 @@ export class LoaderController {
         this.holdTimer = 0;
         this.holdDuration = 1.0;
         this.phase = 'idle';
+        this.maxLoadTime = 8.0;
+        this.elapsedSinceBegin = 0;
 
         this.resolutionFrom = 16;
         this.resolutionTo = 1;
@@ -52,6 +54,7 @@ export class LoaderController {
         }
 
         this.phase = 'revealing';
+        this.elapsedSinceBegin = 0;
     };
 
     static onLoadProgress = ({ progress }) => {
@@ -64,8 +67,19 @@ export class LoaderController {
         }
 
         const dt = Math.min(delta * 0.001, 1 / 30);
+        this.elapsedSinceBegin += dt;
 
         if (this.phase === 'revealing') {
+            if (this.elapsedSinceBegin >= this.maxLoadTime) {
+                console.warn('LoaderController: max load time reached, forcing complete');
+                this.eased = 1;
+                this.progress = 1;
+                this.applyToGlobal(1);
+                this.phase = 'holding';
+                this.holdTimer = 0;
+                return;
+            }
+
             this.eased += (this.progress - this.eased) * Math.min(1, dt * 2.5);
             this.applyToGlobal(this.eased);
 

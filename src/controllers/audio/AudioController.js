@@ -34,7 +34,7 @@ export class AudioController {
         this.audioElement.setAttribute('playsinline', '');
         this.audioElement.setAttribute('webkit-playsinline', '');
 
-        this.audioElement.addEventListener('canplaythrough', this.onCanPlayThrough, { once: true });
+        this.audioElement.addEventListener('loadedmetadata', this.onAudioReady, { once: true });
     }
 
     static initBgElement() {
@@ -52,7 +52,7 @@ export class AudioController {
             this.bgAvailable = false;
         });
 
-        this.bgElement.addEventListener('canplaythrough', () => {
+        this.bgElement.addEventListener('loadedmetadata', () => {
             this.bgAvailable = true;
         }, { once: true });
     }
@@ -73,7 +73,7 @@ export class AudioController {
 
     // Event handlers
 
-    static onCanPlayThrough = () => {
+    static onAudioReady = () => {
         Stage.events.emit(Events.LOAD_PROGRESS, { progress: 0.5 });
     };
 
