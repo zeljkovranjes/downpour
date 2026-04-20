@@ -37,12 +37,12 @@ export class OpeningLine extends Interface {
         this.line.html(this.text);
         this.line.css({
             display: 'inline-block',
-            fontFamily: '"Inter", sans-serif',
+            fontFamily: '"Fraunces", serif',
             fontWeight: 300,
-            fontStyle: 'normal',
-            fontSize: 16,
-            color: 'rgba(255, 255, 255, 0.75)',
-            letterSpacing: '0.08em',
+            fontStyle: 'italic',
+            fontSize: 17,
+            color: 'rgba(255, 255, 255, 0.8)',
+            letterSpacing: '0.02em',
             opacity: 0,
             transition: `opacity ${this.fadeIn}ms ease-out`
         });

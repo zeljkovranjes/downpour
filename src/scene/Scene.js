@@ -4,7 +4,7 @@
 
 import { Group } from 'three';
 
-import { HeartfeltView } from './heartfelt/HeartfeltView.js';
+import { NightView } from './night/NightView.js';
 
 export class Scene extends Group {
     constructor() {
@@ -14,31 +14,31 @@ export class Scene extends Group {
     }
 
     initViews() {
-        this.heartfelt = new HeartfeltView();
-        this.add(this.heartfelt);
+        this.night = new NightView();
+        this.add(this.night);
     }
 
     // Public methods
 
     resize = (width, height) => {
-        this.heartfelt.resize(width, height);
+        this.night.resize(width, height);
     };
 
     update = (time, delta, frame) => {
-        this.heartfelt.update(time, delta, frame);
+        this.night.update(time, delta, frame);
     };
 
     animateIn = () => {
         this.visible = true;
 
-        this.heartfelt.animateIn();
+        this.night.animateIn();
     };
 
     ready = async () => {
-        return this.heartfelt.ready();
+        return this.night.ready();
     };
 
     destroy = () => {
-        this.heartfelt.destroy();
+        this.night.destroy();
     };
 }

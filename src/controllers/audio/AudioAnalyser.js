@@ -15,15 +15,19 @@ export class AudioAnalyser {
         this.analyser = null;
         this.data = null;
 
-        this.threshold = 0.55;
         this.cooldown = 0;
-        this.cooldownDuration = 0.4;
+        this.cooldownDuration = 1.5;
         this.envelope = 0;
         this.attack = 25;
-        this.decay = 1.8;
+        this.decay = 3.0;
+
+        this.baselineEnergy = 0;
+        this.baselineRate = 0.5;
+        this.transientDelta = 0.22;
+        this.transientFloor = 0.4;
 
         this.bandStart = 0;
-        this.bandEnd = 8;
+        this.bandEnd = 3;
 
         this.level = 0;
         this.levelAttack = 8;
@@ -70,9 +74,14 @@ export class AudioAnalyser {
 
         const energy = sum / ((this.bandEnd - this.bandStart) * 255);
 
+        this.baselineEnergy += (energy - this.baselineEnergy) * Math.min(1, dt * this.baselineRate);
+
         this.cooldown = Math.max(0, this.cooldown - dt);
 
-        const triggered = energy > this.threshold && this.cooldown === 0;
+        const rise = energy - this.baselineEnergy;
+        const triggered = rise > this.transientDelta
+            && energy > this.transientFloor
+            && this.cooldown === 0;
 
         if (triggered) {
             this.envelope = 1;

@@ -55,9 +55,9 @@ export class TimeOfDayController {
         }
 
         try {
-            return await this.fetchLocationIpapi();
+            return await this.fetchLocationIfconfig();
         } catch (err) {
-            console.warn('ipapi.co failed:', err.message);
+            console.warn('ifconfig.co failed:', err.message);
         }
 
         throw new Error('all geolocation sources failed');
@@ -87,17 +87,17 @@ export class TimeOfDayController {
         return { latitude, longitude };
     };
 
-    static fetchLocationIpapi = async () => {
-        const response = await fetch('https://ipapi.co/json/');
+    static fetchLocationIfconfig = async () => {
+        const response = await fetch('https://ifconfig.co/json');
 
         if (!response.ok) {
-            throw new Error(`ipapi ${response.status}`);
+            throw new Error(`ifconfig ${response.status}`);
         }
 
         const data = await response.json();
 
         if (typeof data.latitude !== 'number' || typeof data.longitude !== 'number') {
-            throw new Error('ipapi returned invalid coordinates');
+            throw new Error('ifconfig returned invalid coordinates');
         }
 
         return { latitude: data.latitude, longitude: data.longitude };

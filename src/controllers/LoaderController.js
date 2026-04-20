@@ -26,7 +26,7 @@ export class LoaderController {
         this.timeScaleFrom = 0.25;
         this.timeScaleTo = 1;
         this.volumeFrom = 0;
-        this.volumeTo = 0.55r;
+        this.volumeTo = 0.55;
 
         this.addListeners();
         this.applyToGlobal(0);

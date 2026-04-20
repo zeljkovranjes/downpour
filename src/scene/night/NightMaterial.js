@@ -4,10 +4,10 @@
 
 import { GLSL3, RawShaderMaterial, Vector2, Vector3 } from 'three';
 
-import vertexShader from './shaders/Heartfelt.vert.glsl?raw';
-import fragmentShader from './shaders/Heartfelt.frag.glsl?raw';
+import vertexShader from './shaders/Night.vert.glsl?raw';
+import fragmentShader from './shaders/Night.frag.glsl?raw';
 
-export class HeartfeltMaterial extends RawShaderMaterial {
+export class NightMaterial extends RawShaderMaterial {
     constructor() {
         super({
             glslVersion: GLSL3,
@@ -15,7 +15,10 @@ export class HeartfeltMaterial extends RawShaderMaterial {
                 iTime: { value: 0 },
                 iResolution: { value: new Vector2() },
                 iMouse: { value: new Vector3() },
-                iChannel0: { value: null },
+                uTextureA: { value: null },
+                uTextureB: { value: null },
+                uTrail: { value: null },
+                uBlend: { value: 0 },
                 uThunder: { value: 0 },
                 uResolution: { value: 16 },
                 uBlur: { value: 6 },

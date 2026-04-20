@@ -6,7 +6,10 @@ precision highp float;
 uniform float iTime;
 uniform vec2 iResolution;
 uniform vec3 iMouse;
-uniform sampler2D iChannel0;
+uniform sampler2D uTextureA;
+uniform sampler2D uTextureB;
+uniform sampler2D uTrail;
+uniform float uBlend;
 uniform float uThunder;
 uniform float uResolution;
 uniform float uBlur;
@@ -170,6 +173,14 @@ void main() {
     vec2 e = vec2(.001, 0.);
     float cx = Drops(uv + e, t, staticDrops, layer1, layer2).x;
     float cy = Drops(uv + e.yx, t, staticDrops, layer1, layer2).x;
+
+    float wet = smoothstep(0.05, 0.5, texture(uTrail, UV).r);
+    float wetX = smoothstep(0.05, 0.5, texture(uTrail, UV + e).r);
+    float wetY = smoothstep(0.05, 0.5, texture(uTrail, UV + e.yx).r);
+    c.x = max(c.x, wet);
+    cx = max(cx, wetX);
+    cy = max(cy, wetY);
+
     vec2 n = vec2(cx - c.x, cy - c.x);
 
 #ifdef HAS_HEART
@@ -178,14 +189,17 @@ void main() {
 #endif
 
     float focus = mix(maxBlur - c.y, minBlur, S(.1, .2, c.x)) + uBlur;
-    vec3 col = textureLod(iChannel0, UV + n, focus).rgb;
+    vec3 colA = textureLod(uTextureA, UV + n, focus).rgb;
+    vec3 colB = textureLod(uTextureB, UV + n, focus).rgb;
+    vec3 col = mix(colA, colB, uBlend);
 
 #ifdef USE_POST_PROCESSING
     t = (T + 3.) * .5;
     float colFade = sin(t * .2) * .5 + .5 + story;
     col *= mix(vec3(1.), vec3(.8, .9, 1.3), colFade);
     float fade = S(0., 10., T);
-    col *= 1. + uThunder * 0.8 * fade;
+    float thunderStrength = 0.25;
+    col *= 1. + uThunder * thunderStrength * fade;
     vec2 vig = UV - .5;
     col *= 1. - dot(vig, vig);
 
